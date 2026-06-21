@@ -1,6 +1,6 @@
 ---
 title: "apiConfig reference"
-description: "Complete reference for the apiConfig JSON field that controls how AdsVector calls your affiliate API."
+description: "Complete reference for the apiConfig JSON field that controls how GorAff calls your affiliate API."
 ---
 
 `apiConfig` is a JSON object stored on the partner record. It controls date parameters, request formatting, response parsing, and other connection details that can't be expressed through the standard partner fields.
@@ -40,7 +40,7 @@ You set `apiConfig` when creating or updating a partner via the API:
 
 ## Date parameters
 
-AdsVector passes a date range to the API so only recent data is fetched. Configure the parameter names and format to match your program's API.
+GorAff passes a date range to the API so only recent data is fetched. Configure the parameter names and format to match your program's API.
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -100,7 +100,7 @@ Add any fixed query parameters that must be sent with every request:
 
 ## Response parser
 
-`responseType` tells AdsVector which built-in parser to use for the response. Without it, AdsVector expects a generic JSON shape (`{ data: { items: [...] } }` or a plain array).
+`responseType` tells GorAff which built-in parser to use for the response. Without it, GorAff expects a generic JSON shape (`{ data: { items: [...] } }` or a plain array).
 
 | Value | Platform | Format |
 |-------|----------|--------|

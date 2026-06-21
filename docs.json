@@ -2,7 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "maple",
   "name": "GORAFF",
-  "description": "Connect your affiliate programs to AdsVector — integration guides, API reference, and platform-specific setup.",
+  "description": "Connect your affiliate programs to GorAff — integration guides, API reference, and platform-specific setup.",
   "colors": {
     "primary": "#0C8C5E",
     "light": "#18E299",

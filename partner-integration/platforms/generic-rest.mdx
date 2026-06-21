@@ -1,13 +1,13 @@
 ---
 title: "Generic REST API"
-description: "Connect any affiliate program with a JSON API to AdsVector."
+description: "Connect any affiliate program with a JSON API to GorAff."
 ---
 
-If your affiliate program is not in the list of supported platforms, you can still connect it using the generic REST integration. AdsVector will fetch the API, and campaigns will be created from the response.
+If your affiliate program is not in the list of supported platforms, you can still connect it using the generic REST integration. GorAff will fetch the API, and campaigns will be created from the response.
 
 ## Expected response format
 
-Without a specific `responseType`, AdsVector expects one of these JSON shapes:
+Without a specific `responseType`, GorAff expects one of these JSON shapes:
 
 **Shape 1 — nested items:**
 ```json
@@ -142,7 +142,7 @@ If the affiliate API restricts access by IP, enable proxy routing:
 }
 ```
 
-This routes requests through the server-side proxy configured in `PROXY_URL`. Contact your AdsVector administrator to confirm the proxy is set up.
+This routes requests through the server-side proxy configured in `PROXY_URL`. Contact your GorAff administrator to confirm the proxy is set up.
 
 ## Need a custom parser?
 

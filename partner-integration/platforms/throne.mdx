@@ -1,13 +1,13 @@
 ---
 title: "Throne (MyAffiliates)"
-description: "Connect your Throne affiliate panel to AdsVector using OAuth2 and CSV export."
+description: "Connect your Throne affiliate panel to GorAff using OAuth2 and CSV export."
 ---
 
-Throne is built on the MyAffiliates platform. It uses OAuth2 client credentials for authentication and returns affiliate stats as a CSV file. AdsVector fetches the CSV over HTTP after obtaining an OAuth2 bearer token.
+Throne is built on the MyAffiliates platform. It uses OAuth2 client credentials for authentication and returns affiliate stats as a CSV file. GorAff fetches the CSV over HTTP after obtaining an OAuth2 bearer token.
 
 ## Metrics imported
 
-| AdsVector field | Throne CSV column |
+| GorAff field | Throne CSV column |
 |-----------------|-------------------|
 | Clicks | `Clicks` |
 | Leads | `Signups` or `NRC` |
@@ -20,7 +20,7 @@ Throne is built on the MyAffiliates platform. It uses OAuth2 client credentials 
 | rawData.totalBets | `Total Bets` |
 | rawData.totalWinnings | `Total Winnings` |
 
-AdsVector handles both column naming conventions (`Signups`/`NRC`, `FTD Count`/`NDC`, etc.) across different panel versions.
+GorAff handles both column naming conventions (`Signups`/`NRC`, `FTD Count`/`NDC`, etc.) across different panel versions.
 
 ## Get your credentials
 
@@ -37,7 +37,7 @@ Before connecting, make sure the CSV report is allowed to be downloaded via OAut
 2. Find the report you want to sync
 3. Under **Download options**, enable OAuth-based download
 
-If this step is skipped, AdsVector will receive an HTML login page instead of a CSV and the sync will fail with: *"Throne returned an HTML page instead of CSV"*.
+If this step is skipped, GorAff will receive an HTML login page instead of a CSV and the sync will fail with: *"Throne returned an HTML page instead of CSV"*.
 
 ## Configure the partner
 

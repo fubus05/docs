@@ -1,13 +1,13 @@
 ---
 title: "Affilka"
-description: "Connect your Affilka affiliate account to AdsVector."
+description: "Connect your Affilka affiliate account to GorAff."
 ---
 
-Affilka returns stats as JSON. Each row can be a flat object or an array of `{ name, value, type }` cells — AdsVector handles both formats. Rows are grouped by `campaign_id + date`.
+Affilka returns stats as JSON. Each row can be a flat object or an array of `{ name, value, type }` cells — GorAff handles both formats. Rows are grouped by `campaign_id + date`.
 
 ## Metrics imported
 
-| AdsVector field | Affilka field |
+| GorAff field | Affilka field |
 |-----------------|---------------|
 | Clicks | `visits_count` |
 | Leads | `registrations_count` |
@@ -45,7 +45,7 @@ If Affilka's API uses a different parameter name for dates or requires the key i
 
 ## Response shape
 
-AdsVector accepts two response shapes from Affilka:
+GorAff accepts two response shapes from Affilka:
 
 **Shape 1:**
 ```json

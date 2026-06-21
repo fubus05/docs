@@ -1,13 +1,13 @@
 ---
 title: "CellExpert"
-description: "Connect your CellExpert affiliate account to AdsVector."
+description: "Connect your CellExpert affiliate account to GorAff."
 ---
 
-CellExpert returns stats as XML (`<ResultSet><row>…</row></ResultSet>`). AdsVector parses the XML and groups rows by **Brand + Date** — one brand becomes one campaign.
+CellExpert returns stats as XML (`<ResultSet><row>…</row></ResultSet>`). GorAff parses the XML and groups rows by **Brand + Date** — one brand becomes one campaign.
 
 ## Metrics imported
 
-| AdsVector field | CellExpert XML field |
+| GorAff field | CellExpert XML field |
 |-----------------|----------------------|
 | Clicks | `Unique_Visitors` |
 | Leads | `Registrations` |
@@ -15,7 +15,7 @@ CellExpert returns stats as XML (`<ResultSet><row>…</row></ResultSet>`). AdsVe
 | Revenue | `Commission` |
 | rawData.deposits | `Deposits` |
 
-The date field in the XML is `Day` in `YYYY/MM/DD` format — AdsVector converts it to `YYYY-MM-DD` automatically.
+The date field in the XML is `Day` in `YYYY/MM/DD` format — GorAff converts it to `YYYY-MM-DD` automatically.
 
 ## Get your credentials
 

@@ -1,9 +1,9 @@
 ---
 title: "Authentication methods"
-description: "How AdsVector authenticates with your affiliate program's API."
+description: "How GorAff authenticates with your affiliate program's API."
 ---
 
-When you create a partner, you choose how AdsVector sends credentials to the affiliate API. The method you pick must match what the affiliate program expects.
+When you create a partner, you choose how GorAff sends credentials to the affiliate API. The method you pick must match what the affiliate program expects.
 
 ## API Key (`API_KEY`)
 
@@ -65,7 +65,7 @@ The parameter names default to `username` and `password`. Use `apiConfig.usernam
 
 ## OAuth2 Client Credentials (`OAUTH2_CLIENT_CREDENTIALS`)
 
-AdsVector performs the OAuth2 `client_credentials` grant automatically before each request:
+GorAff performs the OAuth2 `client_credentials` grant automatically before each request:
 
 1. Posts `client_id` + `client_secret` to the token endpoint
 2. Receives an `access_token`

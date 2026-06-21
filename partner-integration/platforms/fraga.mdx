@@ -1,13 +1,13 @@
 ---
 title: "Fraga"
-description: "Connect your Fraga affiliate account to AdsVector."
+description: "Connect your Fraga affiliate account to GorAff."
 ---
 
 Fraga uses a REST API that returns JSON with a `data` array. Each row is keyed by `serial_id` (tracker/campaign) and `transaction_date`.
 
 ## Metrics imported
 
-| AdsVector field | Fraga field |
+| GorAff field | Fraga field |
 |-----------------|-------------|
 | Leads | `registration` |
 | Conversions | `ftd_count` |
@@ -49,7 +49,7 @@ Replace `apiUrl` with the exact endpoint URL from your Fraga panel. The field na
 
 ## How campaigns are created
 
-AdsVector uses `serial_id` as the `externalId` for each campaign. The campaign name is taken from `tracker_name`. If multiple rows share the same `serial_id` and `transaction_date` (e.g. multiple brands), their metrics are summed before writing.
+GorAff uses `serial_id` as the `externalId` for each campaign. The campaign name is taken from `tracker_name`. If multiple rows share the same `serial_id` and `transaction_date` (e.g. multiple brands), their metrics are summed before writing.
 
 ## Test the connection
 

@@ -1,6 +1,6 @@
 ---
 title: "Quick start"
-description: "Connect your first affiliate program to AdsVector in five minutes."
+description: "Connect your first affiliate program to GorAff in five minutes."
 ---
 
 This guide walks you through adding a partner that uses a simple API key — the most common setup. For OAuth2, CSV, or custom authentication, see [Authentication methods](/partner-integration/auth-methods).
@@ -8,13 +8,13 @@ This guide walks you through adding a partner that uses a simple API key — the
 ## Before you start
 
 You need:
-- An active AdsVector account
+- An active GorAff account
 - Your affiliate program's **API endpoint URL**
 - Your affiliate program's **API key** or access token
 
 ## Step 1: Open the Partners page
 
-In the AdsVector dashboard, navigate to **Partners** and click **Add partner**.
+In the GorAff dashboard, navigate to **Partners** and click **Add partner**.
 
 ## Step 2: Fill in the basic details
 
@@ -30,7 +30,7 @@ In the AdsVector dashboard, navigate to **Partners** and click **Add partner**.
 
 Click **Save**. Then open the partner detail page and click **Sync now**.
 
-AdsVector fetches data from the API, creates campaigns, and imports the last 7 days of stats. The sync usually takes a few seconds. Check the **Sync logs** tab for the result.
+GorAff fetches data from the API, creates campaigns, and imports the last 7 days of stats. The sync usually takes a few seconds. Check the **Sync logs** tab for the result.
 
 If you see `SUCCESS`, you're done. If you see `FAILED`, check the error message in the sync log — it usually points to an authentication issue or a wrong URL.
 
@@ -38,7 +38,7 @@ If you see `SUCCESS`, you're done. If you see `FAILED`, check the error message 
 
 On the partner detail page, set **Auto-sync interval**. The minimum is 1 minute; a value of 60–1440 minutes is typical for affiliate stats.
 
-AdsVector will queue a sync job on that interval and backfill any data since the last successful sync (up to 30 days).
+GorAff will queue a sync job on that interval and backfill any data since the last successful sync (up to 30 days).
 
 ## Next steps
 

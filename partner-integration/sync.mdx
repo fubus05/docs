@@ -1,9 +1,9 @@
 ---
 title: "Sync"
-description: "How AdsVector fetches data from your affiliate programs — manual, scheduled, and range syncs."
+description: "How GorAff fetches data from your affiliate programs — manual, scheduled, and range syncs."
 ---
 
-A sync is a single fetch from the affiliate API that updates campaign records and daily stats. AdsVector supports three modes: manual, scheduled (auto-sync), and range sync.
+A sync is a single fetch from the affiliate API that updates campaign records and daily stats. GorAff supports three modes: manual, scheduled (auto-sync), and range sync.
 
 ## Manual sync
 
@@ -17,7 +17,7 @@ The sync runs asynchronously. It fetches data for the period since the last succ
 
 ## Auto-sync
 
-Set an interval on the partner to have AdsVector sync automatically:
+Set an interval on the partner to have GorAff sync automatically:
 
 ```
 PATCH /partners/:id/sync-schedule
@@ -47,7 +47,7 @@ This is useful after initially connecting a partner — it lets you pull histori
 
 ## What happens during a sync
 
-1. AdsVector builds request parameters (date range, command, auth) from the partner's settings.
+1. GorAff builds request parameters (date range, command, auth) from the partner's settings.
 2. A GET or POST request is made to `apiUrl`.
 3. The response is parsed using the configured parser (see `apiConfig.responseType`).
 4. Campaigns are upserted — created if new, updated if existing.
@@ -57,7 +57,7 @@ This is useful after initially connecting a partner — it lets you pull histori
 
 ## Cap notifications
 
-If a campaign has a **cap** set (a player limit configured by the advertiser), AdsVector sends Telegram notifications when the cap is reached at 50% and 100%. The campaign status changes to `CAP_REACHED` when the limit is hit.
+If a campaign has a **cap** set (a player limit configured by the advertiser), GorAff sends Telegram notifications when the cap is reached at 50% and 100%. The campaign status changes to `CAP_REACHED` when the limit is hit.
 
 ## Sync logs
 

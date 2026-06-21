@@ -3,7 +3,7 @@ title: "CSV import"
 description: "Import affiliate stats from a report file when the program doesn't provide an API."
 ---
 
-Some affiliate programs let you download a report as a CSV file but don't offer an API. AdsVector can import these reports directly — either from a URL or via an upload.
+Some affiliate programs let you download a report as a CSV file but don't offer an API. GorAff can import these reports directly — either from a URL or via an upload.
 
 ## When to use CSV import
 
@@ -43,7 +43,7 @@ POST /partners/:id/import-csv-url
 }
 ```
 
-AdsVector downloads the file and processes it immediately. The response includes:
+GorAff downloads the file and processes it immediately. The response includes:
 
 ```json
 {
@@ -58,7 +58,7 @@ AdsVector downloads the file and processes it immediately. The response includes
 
 ## Expected CSV format
 
-AdsVector expects the following column headers (case-sensitive):
+GorAff expects the following column headers (case-sensitive):
 
 | Column | Required | Description |
 |--------|----------|-------------|
@@ -94,6 +94,6 @@ Re-importing the same file is safe — existing rows are updated with the new va
 
 ## Range sync for CSV partners
 
-When you trigger a range sync on a CSV partner, AdsVector counts how many stats rows already exist in the requested date range instead of calling an API. This means range sync on CSV partners is instant and doesn't download anything — it simply reports what data you already have.
+When you trigger a range sync on a CSV partner, GorAff counts how many stats rows already exist in the requested date range instead of calling an API. This means range sync on CSV partners is instant and doesn't download anything — it simply reports what data you already have.
 
 To update the data, run another `import-csv-url` with the new report file.
