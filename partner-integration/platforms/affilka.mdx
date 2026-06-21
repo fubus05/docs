@@ -1,0 +1,81 @@
+---
+title: "Affilka"
+description: "Connect your Affilka affiliate account to AdsVector."
+---
+
+Affilka returns stats as JSON. Each row can be a flat object or an array of `{ name, value, type }` cells — AdsVector handles both formats. Rows are grouped by `campaign_id + date`.
+
+## Metrics imported
+
+| AdsVector field | Affilka field |
+|-----------------|---------------|
+| Clicks | `visits_count` |
+| Leads | `registrations_count` |
+| Conversions | `first_deposits_count` |
+| Revenue | `partner_income` or `clean_net_revenue` |
+| rawData.deposits | `deposits_sum` |
+| rawData.ngr | `ngr` |
+
+## Get your credentials
+
+1. Log in to the Affilka partner dashboard
+2. Go to **Tools → API** or **Account → API Access**
+3. Copy your **API endpoint** and **API key**
+
+## Configure the partner
+
+```json
+{
+  "name": "Affilka",
+  "slug": "affilka",
+  "apiUrl": "https://api.affilka.com/v1/stats",
+  "authMethod": "API_KEY",
+  "apiKey": "your-affilka-api-key",
+  "apiConfig": {
+    "dateFromField": "date_from",
+    "dateToField": "date_to",
+    "responseType": "affilka"
+  }
+}
+```
+
+<Note>
+If Affilka's API uses a different parameter name for dates or requires the key in a query string instead of a header, refer to the [apiConfig reference](/partner-integration/api-config) for the relevant options (`dateFromField`, `dateToField`, `tokenField`).
+</Note>
+
+## Response shape
+
+AdsVector accepts two response shapes from Affilka:
+
+**Shape 1:**
+```json
+{ "rows": { "data": [ ... ] } }
+```
+
+**Shape 2:**
+```json
+{ "data": [ ... ] }
+```
+
+Within each row, the data can be a flat object:
+```json
+{ "campaign_id": "42", "date": "2026-06-01", "registrations_count": 5 }
+```
+
+Or a cell array:
+```json
+[
+  { "name": "campaign_id", "value": "42", "type": "string" },
+  { "name": "date", "value": "2026-06-01", "type": "date" }
+]
+```
+
+Both are normalised into the same internal representation.
+
+## How campaigns are created
+
+Each unique `campaign_id` (or `campaign`) value becomes a campaign. The campaign name defaults to the `campaign_id` — Affilka doesn't always return a human-readable name.
+
+## Test the connection
+
+After saving, trigger a manual sync. Check the sync log for `SUCCESS` and `recordsProcessed > 0`. If you see `0` processed rows, confirm the date range overlaps with active campaign activity.

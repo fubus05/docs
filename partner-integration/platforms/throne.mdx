@@ -1,0 +1,96 @@
+---
+title: "Throne (MyAffiliates)"
+description: "Connect your Throne affiliate panel to AdsVector using OAuth2 and CSV export."
+---
+
+Throne is built on the MyAffiliates platform. It uses OAuth2 client credentials for authentication and returns affiliate stats as a CSV file. AdsVector fetches the CSV over HTTP after obtaining an OAuth2 bearer token.
+
+## Metrics imported
+
+| AdsVector field | Throne CSV column |
+|-----------------|-------------------|
+| Clicks | `Clicks` |
+| Leads | `Signups` or `NRC` |
+| Conversions | `FTD Count` or `NDC` |
+| Revenue | `Income` |
+| rawData.impressions | `Impressions` |
+| rawData.qualifiedPlayers | `Qualified Players` |
+| rawData.deposits | `Total Deposits` or `Deposits` |
+| rawData.ftdAmount | `FTD Amount` |
+| rawData.totalBets | `Total Bets` |
+| rawData.totalWinnings | `Total Winnings` |
+
+AdsVector handles both column naming conventions (`Signups`/`NRC`, `FTD Count`/`NDC`, etc.) across different panel versions.
+
+## Get your credentials
+
+1. Log in to the Throne affiliate panel
+2. Go to **Account → API / OAuth** settings
+3. Note your **Client ID** and **Client Secret**
+4. Find your **CSV download URL** — it usually looks like `https://panel.thrnaffpanel.com/api/report.csv`
+
+## Enable OAuth download for your report
+
+Before connecting, make sure the CSV report is allowed to be downloaded via OAuth:
+
+1. In Throne, go to **Account → Authorisation**
+2. Find the report you want to sync
+3. Under **Download options**, enable OAuth-based download
+
+If this step is skipped, AdsVector will receive an HTML login page instead of a CSV and the sync will fail with: *"Throne returned an HTML page instead of CSV"*.
+
+## Configure the partner
+
+```json
+{
+  "name": "Throne",
+  "slug": "throne",
+  "apiUrl": "https://panel.thrnaffpanel.com/api/report.csv",
+  "authMethod": "OAUTH2_CLIENT_CREDENTIALS",
+  "apiUsername": "your-client-id",
+  "apiPassword": "your-client-secret",
+  "apiConfig": {
+    "dateFromField": "start_date",
+    "dateToField": "end_date",
+    "responseType": "throne_csv"
+  }
+}
+```
+
+<Note>
+Replace `apiUrl`, `apiUsername`, and `apiPassword` with the values from your Throne panel. The `oauthTokenUrl` defaults to `{origin}/oauth/access_token` — add it to `apiConfig` if your panel uses a different token URL.
+</Note>
+
+## How campaigns are created
+
+Each unique `Channel` value in the CSV becomes a campaign. Rows are grouped by `Channel + Date` — multiple pay-period blocks in the same CSV (Throne re-prints the header for each period) are deduplicated automatically.
+
+## Alternative: session cookie
+
+If your Throne panel version doesn't support OAuth download, you can authenticate with a browser session cookie instead:
+
+```json
+{
+  "authMethod": "CUSTOM_HEADERS",
+  "apiConfig": {
+    "customHeaders": {
+      "Cookie": "your-session-cookie-here"
+    },
+    "dateFromField": "start_date",
+    "dateToField": "end_date",
+    "responseType": "throne_csv"
+  }
+}
+```
+
+<Warning>
+Session cookies expire (typically after a few hours or days). You'll need to update the `customHeaders` cookie value manually whenever it expires. For stable integrations, use OAuth2.
+</Warning>
+
+## Troubleshooting
+
+**HTML page returned instead of CSV** — OAuth download is not enabled in the Throne panel. Follow the steps in [Enable OAuth download](#enable-oauth-download-for-your-report).
+
+**`0` recordsProcessed** — the date range returned no rows with a valid `Channel` and `Date`. Verify that the report URL generates data for the requested period.
+
+**Token endpoint error** — add `oauthTokenUrl` to `apiConfig` if the default (`{origin}/oauth/access_token`) doesn't match your panel's endpoint.

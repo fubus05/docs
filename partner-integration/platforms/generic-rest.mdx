@@ -1,0 +1,149 @@
+---
+title: "Generic REST API"
+description: "Connect any affiliate program with a JSON API to AdsVector."
+---
+
+If your affiliate program is not in the list of supported platforms, you can still connect it using the generic REST integration. AdsVector will fetch the API, and campaigns will be created from the response.
+
+## Expected response format
+
+Without a specific `responseType`, AdsVector expects one of these JSON shapes:
+
+**Shape 1 — nested items:**
+```json
+{
+  "data": {
+    "items": [
+      { "id": "42", "name": "My Campaign", "state": "active" }
+    ]
+  }
+}
+```
+
+**Shape 2 — direct data wrapper:**
+```json
+{
+  "data": [
+    { "id": "42", "name": "My Campaign", "state": "active" }
+  ]
+}
+```
+
+**Shape 3 — plain array:**
+```json
+[
+  { "id": "42", "name": "My Campaign", "state": "active" }
+]
+```
+
+Each item must have an `id` field. The following fields are optional but recognised:
+
+| Field | Description |
+|-------|-------------|
+| `id` | Campaign identifier (required) |
+| `name` | Campaign display name |
+| `state` | `"active"`, `"paused"`, `"archived"`, or `"draft"` |
+| `created_at` | ISO date string — stored as campaign start date |
+| `archived_at` | ISO date string — stored as campaign end date |
+| `players_count` | Used for cap tracking and Telegram notifications |
+| `brand` | Stored in campaign metadata |
+| `traffic_sources` | Stored in campaign metadata |
+
+The generic parser creates or updates campaigns only — it does not write daily stats. Use the `fetch-data` endpoint or a custom `responseType` (available for supported platforms) for stats.
+
+## Basic example
+
+An affiliate program with Bearer auth and date parameters:
+
+```json
+{
+  "name": "My Affiliate Program",
+  "slug": "my-affiliate",
+  "apiUrl": "https://api.example.com/campaigns",
+  "authMethod": "API_KEY",
+  "apiKey": "sk-abc123",
+  "apiConfig": {
+    "dateFromField": "from",
+    "dateToField": "to"
+  }
+}
+```
+
+## API key in query parameter
+
+If the program requires the API key as a query parameter instead of an Authorization header:
+
+```json
+{
+  "apiConfig": {
+    "tokenField": "token",
+    "dateFromField": "date_start",
+    "dateToField": "date_end"
+  }
+}
+```
+
+This sends: `GET /campaigns?token=sk-abc123&date_start=2026-06-01&date_end=2026-06-21`
+
+## Command-based API
+
+Some APIs use a single endpoint with a `command` or `action` parameter:
+
+```json
+{
+  "apiConfig": {
+    "commandField": "action",
+    "commands": ["get_campaigns"],
+    "dateFromField": "from",
+    "dateToField": "to",
+    "extraParams": {
+      "currency": "USD"
+    }
+  }
+}
+```
+
+## POST request with JSON body
+
+```json
+{
+  "apiConfig": {
+    "httpMethod": "POST",
+    "bodyFormat": "json",
+    "dateFromField": "startDate",
+    "dateToField": "endDate"
+  }
+}
+```
+
+## Credentials in query parameters
+
+```json
+{
+  "authMethod": "CREDENTIALS",
+  "apiUsername": "your-username",
+  "apiPassword": "your-password",
+  "apiConfig": {
+    "usernameField": "login",
+    "passwordField": "pass"
+  }
+}
+```
+
+## Proxy routing
+
+If the affiliate API restricts access by IP, enable proxy routing:
+
+```json
+{
+  "apiConfig": {
+    "useProxy": true
+  }
+}
+```
+
+This routes requests through the server-side proxy configured in `PROXY_URL`. Contact your AdsVector administrator to confirm the proxy is set up.
+
+## Need a custom parser?
+
+If the affiliate program uses a non-standard response format (XML, multi-section CSV, a deeply nested JSON structure), the generic parser won't write stats rows. Contact support with a sample API response and we can add a dedicated `responseType` for your platform.

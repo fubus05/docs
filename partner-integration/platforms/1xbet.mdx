@@ -1,0 +1,54 @@
+---
+title: "1xBet"
+description: "Connect your 1xBet affiliate account to AdsVector."
+---
+
+1xBet returns a JSON array where each object represents one sub-affiliate ID (`SubID`). AdsVector maps each `SubID` to a campaign and writes stats for the sync date.
+
+## Metrics imported
+
+| AdsVector field | 1xBet field |
+|-----------------|-------------|
+| Leads | `Regs` |
+| Conversions | `Countftd` |
+| Revenue | `ItogComission` |
+| rawData.DirectLink | `DirectLink` |
+| rawData.SumDep | `SumDep` |
+| rawData.SumProf | `SumProf` |
+| rawData.CountRegDep | `CountRegDep` |
+| rawData.SumNewDep | `SumNewDep` |
+
+<Note>
+1xBet reports are per-day totals rather than per-day time series. Stats are written to the date passed as `toDate` in the sync request (or today for auto-sync).
+</Note>
+
+## Get your credentials
+
+1. Log in to the 1xBet affiliate program at `1xbet-partners.com`
+2. Navigate to **Statistics → API** or contact your account manager for API access
+3. Obtain your **API URL** and **API key / token**
+
+## Configure the partner
+
+```json
+{
+  "name": "1xBet",
+  "slug": "1xbet",
+  "apiUrl": "https://api.1xbet-partners.com/stats",
+  "authMethod": "API_KEY",
+  "apiKey": "your-1xbet-api-key",
+  "apiConfig": {
+    "dateFromField": "date_from",
+    "dateToField": "date_to",
+    "responseType": "1xbet"
+  }
+}
+```
+
+## How campaigns are created
+
+Each unique `SubID` value in the response array becomes a campaign. The `SubID` is used as both `externalId` and the campaign display name.
+
+## Test the connection
+
+After saving, trigger a manual sync. If you see `SUCCESS` with `recordsProcessed > 0`, the integration is working. If `recordsProcessed` is `0`, verify that your account has active sub-affiliates and that the date range includes days with activity.

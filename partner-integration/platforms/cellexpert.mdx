@@ -1,0 +1,66 @@
+---
+title: "CellExpert"
+description: "Connect your CellExpert affiliate account to AdsVector."
+---
+
+CellExpert returns stats as XML (`<ResultSet><row>…</row></ResultSet>`). AdsVector parses the XML and groups rows by **Brand + Date** — one brand becomes one campaign.
+
+## Metrics imported
+
+| AdsVector field | CellExpert XML field |
+|-----------------|----------------------|
+| Clicks | `Unique_Visitors` |
+| Leads | `Registrations` |
+| Conversions | `FTD` |
+| Revenue | `Commission` |
+| rawData.deposits | `Deposits` |
+
+The date field in the XML is `Day` in `YYYY/MM/DD` format — AdsVector converts it to `YYYY-MM-DD` automatically.
+
+## Get your credentials
+
+1. Log in to the CellExpert affiliate portal
+2. Go to **Reports → API** or **My Account → API Settings**
+3. Copy your **API URL** and **API token / key**
+
+## Configure the partner
+
+```json
+{
+  "name": "CellExpert",
+  "slug": "cellexpert",
+  "apiUrl": "https://api.cellexpert.com/report",
+  "authMethod": "API_KEY",
+  "apiKey": "your-cellexpert-token",
+  "apiConfig": {
+    "dateFromField": "StartDate",
+    "dateToField": "EndDate",
+    "responseType": "cellexpert"
+  }
+}
+```
+
+<Note>
+The exact parameter names for date fields (`StartDate`, `EndDate`) may differ — check your CellExpert API documentation for the correct names.
+</Note>
+
+## How campaigns are created
+
+Each unique `Brand` value in the XML becomes a separate campaign. The brand name is used as both `externalId` and the campaign display name.
+
+## Test the connection
+
+After saving, trigger a manual sync. The sync log should show `SUCCESS`. If it shows `recordsProcessed: 0`, the XML response may be empty (no data for that date range) or the `Brand` / `Day` fields are missing from the XML.
+
+Check the raw XML response by calling the fetch-data endpoint manually:
+
+```
+POST /partners/:id/fetch-data
+```
+
+```json
+{
+  "fromDate": "2026-06-01",
+  "toDate": "2026-06-07"
+}
+```

@@ -1,0 +1,58 @@
+---
+title: "Fraga"
+description: "Connect your Fraga affiliate account to AdsVector."
+---
+
+Fraga uses a REST API that returns JSON with a `data` array. Each row is keyed by `serial_id` (tracker/campaign) and `transaction_date`.
+
+## Metrics imported
+
+| AdsVector field | Fraga field |
+|-----------------|-------------|
+| Leads | `registration` |
+| Conversions | `ftd_count` |
+| Revenue | `profit` |
+| rawData.cpa\_count | `cpa_count` |
+| rawData.cpa\_profit | `cpa_profit` |
+| rawData.revenue\_share\_profit | `revenue_share_profit` |
+| rawData.deposits | `deposits` |
+| rawData.ngr | `ngr` |
+| rawData.ggr | `ggr` |
+| rawData.turnover | `turnover` |
+
+## Get your credentials
+
+1. Log in to your Fraga affiliate panel
+2. Navigate to **Account → API** or **Tools → API Access**
+3. Copy your **API Key** and the **Stats endpoint URL**
+
+## Configure the partner
+
+```json
+{
+  "name": "Fraga",
+  "slug": "fraga",
+  "apiUrl": "https://api.fraga.com/v1/stats",
+  "authMethod": "API_KEY",
+  "apiKey": "your-fraga-api-key",
+  "apiConfig": {
+    "dateFromField": "from",
+    "dateToField": "to",
+    "responseType": "fraga_stats"
+  }
+}
+```
+
+<Note>
+Replace `apiUrl` with the exact endpoint URL from your Fraga panel. The field names `from` / `to` are the most common, but verify them in the Fraga API documentation.
+</Note>
+
+## How campaigns are created
+
+AdsVector uses `serial_id` as the `externalId` for each campaign. The campaign name is taken from `tracker_name`. If multiple rows share the same `serial_id` and `transaction_date` (e.g. multiple brands), their metrics are summed before writing.
+
+## Test the connection
+
+After saving the partner, click **Sync now**. If the sync log shows `SUCCESS` and `recordsProcessed > 0`, the integration is working.
+
+If you see `0 recordsProcessed` but the sync succeeded, the API returned data but no rows had a valid `serial_id` and `transaction_date`. Check that the date range includes days with activity.

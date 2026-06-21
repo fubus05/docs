@@ -1,0 +1,53 @@
+---
+title: "Partner integrations"
+description: "Connect your affiliate network accounts to AdsVector and pull campaign stats automatically."
+---
+
+AdsVector aggregates performance data from your affiliate programs (partner networks) into a single dashboard. You connect each program once — AdsVector then syncs campaigns and daily stats on a schedule you control.
+
+## How it works
+
+1. **Add a partner** — provide the program's API endpoint and credentials.
+2. **Configure the connection** — choose the authentication method and, if needed, set advanced options via `apiConfig`.
+3. **Sync data** — trigger a manual sync or let AdsVector sync automatically on an interval.
+4. **View campaigns** — campaigns and daily stats appear in your dashboard after the first successful sync.
+
+## What gets pulled
+
+For each campaign AdsVector imports:
+
+| Metric | Description |
+|--------|-------------|
+| Clicks | Unique or total clicks reported by the program |
+| Leads | Registrations / sign-ups |
+| Conversions | First-time deposits (FTD) or other conversion events |
+| Revenue | Partner income — RevShare, CPA, CPC, fixed fee, or a combination |
+| Deposits | Total deposit amount |
+| NGR / GGR | Net / Gross Gaming Revenue (where available) |
+| Turnover | Total wagered amount (where available) |
+
+Raw response data is also stored and accessible via the API for custom reporting.
+
+## Integration types
+
+| Type | Description |
+|------|-------------|
+| [REST API](/partner-integration/auth-methods) | Pull data from the partner's HTTP API |
+| [CSV import](/partner-integration/csv-import) | Upload or link a report file exported from the partner panel |
+
+## Supported platforms
+
+AdsVector has built-in parsers for several affiliate platforms. If your platform is not listed, you can still connect it using the [generic REST integration](/partner-integration/platforms/generic-rest).
+
+- [Fraga](/partner-integration/platforms/fraga)
+- [CellExpert](/partner-integration/platforms/cellexpert)
+- [Throne (MyAffiliates)](/partner-integration/platforms/throne)
+- [1xBet](/partner-integration/platforms/1xbet)
+- [Affilka](/partner-integration/platforms/affilka)
+- [Generic REST API](/partner-integration/platforms/generic-rest)
+
+## Next steps
+
+- [Quick start](/partner-integration/quickstart) — add your first partner in five minutes
+- [Authentication methods](/partner-integration/auth-methods) — understand all credential options
+- [apiConfig reference](/partner-integration/api-config) — advanced connection settings

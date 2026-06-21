@@ -1,0 +1,47 @@
+---
+title: "Quick start"
+description: "Connect your first affiliate program to AdsVector in five minutes."
+---
+
+This guide walks you through adding a partner that uses a simple API key — the most common setup. For OAuth2, CSV, or custom authentication, see [Authentication methods](/partner-integration/auth-methods).
+
+## Before you start
+
+You need:
+- An active AdsVector account
+- Your affiliate program's **API endpoint URL**
+- Your affiliate program's **API key** or access token
+
+## Step 1: Open the Partners page
+
+In the AdsVector dashboard, navigate to **Partners** and click **Add partner**.
+
+## Step 2: Fill in the basic details
+
+| Field | What to enter |
+|-------|---------------|
+| **Name** | A display name, e.g. `Fraga Affiliates` |
+| **Slug** | A short unique ID, e.g. `fraga` — used in URLs and logs |
+| **API URL** | The stats endpoint from your affiliate panel |
+| **Auth method** | Select `API Key` |
+| **API key** | Paste your key or token from the affiliate panel |
+
+## Step 3: Save and run the first sync
+
+Click **Save**. Then open the partner detail page and click **Sync now**.
+
+AdsVector fetches data from the API, creates campaigns, and imports the last 7 days of stats. The sync usually takes a few seconds. Check the **Sync logs** tab for the result.
+
+If you see `SUCCESS`, you're done. If you see `FAILED`, check the error message in the sync log — it usually points to an authentication issue or a wrong URL.
+
+## Step 4: Enable auto-sync (optional)
+
+On the partner detail page, set **Auto-sync interval**. The minimum is 1 minute; a value of 60–1440 minutes is typical for affiliate stats.
+
+AdsVector will queue a sync job on that interval and backfill any data since the last successful sync (up to 30 days).
+
+## Next steps
+
+- [Authentication methods](/partner-integration/auth-methods) — connect programs that use OAuth2, credentials, or custom headers
+- [apiConfig reference](/partner-integration/api-config) — configure date parameters, custom response parsers, and more
+- [Supported platforms](/partner-integration/platforms/index) — step-by-step guides for Fraga, CellExpert, Throne, 1xBet, and Affilka

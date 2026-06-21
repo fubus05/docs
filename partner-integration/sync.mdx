@@ -1,0 +1,90 @@
+---
+title: "Sync"
+description: "How AdsVector fetches data from your affiliate programs — manual, scheduled, and range syncs."
+---
+
+A sync is a single fetch from the affiliate API that updates campaign records and daily stats. AdsVector supports three modes: manual, scheduled (auto-sync), and range sync.
+
+## Manual sync
+
+Trigger a one-time sync from the partner detail page by clicking **Sync now**, or via the API:
+
+```
+POST /partners/:id/sync
+```
+
+The sync runs asynchronously. It fetches data for the period since the last successful sync (up to 30 days back, or the last 7 days for the first-ever sync).
+
+## Auto-sync
+
+Set an interval on the partner to have AdsVector sync automatically:
+
+```
+PATCH /partners/:id/sync-schedule
+```
+
+```json
+{ "intervalMinutes": 60 }
+```
+
+Pass `null` to disable:
+
+```json
+{ "intervalMinutes": null }
+```
+
+The minimum interval is 1 minute. Typical values for affiliate stats are 60 (hourly) or 1440 (daily).
+
+<Note>
+Auto-sync uses the same date logic as manual sync: from the last sync date to today, capped at 30 days. Running it more frequently than the affiliate program updates stats (usually daily) has no effect but increases API calls.
+</Note>
+
+## Range sync
+
+Request a backfill of a specific date range via the Telegram bot or the API. Range sync splits the period into daily jobs that run in parallel, then reports the result.
+
+This is useful after initially connecting a partner — it lets you pull historical data without hitting a manual trigger every day.
+
+## What happens during a sync
+
+1. AdsVector builds request parameters (date range, command, auth) from the partner's settings.
+2. A GET or POST request is made to `apiUrl`.
+3. The response is parsed using the configured parser (see `apiConfig.responseType`).
+4. Campaigns are upserted — created if new, updated if existing.
+5. Daily stats rows are upserted for each campaign and date.
+6. `lastSyncAt` is updated on the partner.
+7. A `SyncLog` record is written with the result.
+
+## Cap notifications
+
+If a campaign has a **cap** set (a player limit configured by the advertiser), AdsVector sends Telegram notifications when the cap is reached at 50% and 100%. The campaign status changes to `CAP_REACHED` when the limit is hit.
+
+## Sync logs
+
+View the history of syncs for a partner:
+
+```
+GET /partners/:id/sync-logs?page=1&limit=10
+```
+
+Each log record includes:
+
+| Field | Description |
+|-------|-------------|
+| `status` | `SUCCESS`, `PARTIAL_SUCCESS`, `FAILED`, `IN_PROGRESS` |
+| `recordsProcessed` | Number of campaign/stats rows written |
+| `recordsFailed` | Number of rows that failed to write |
+| `error` | Error message if the sync failed |
+| `errorCode` | HTTP status code from the affiliate API (if applicable) |
+| `startedAt` / `finishedAt` | Timing |
+| `metadata` | Additional info: duration, total API entries, HTTP status |
+
+## Troubleshooting sync failures
+
+**`401` or `403` in errorCode** — credentials are wrong or expired. Re-check your API key, username/password, or OAuth2 client secret.
+
+**`404`** — the API URL is wrong. Verify the endpoint in your affiliate panel.
+
+**`0` recordsProcessed** — the request succeeded but the response contained no items. This can mean the date range returned no data, or the response format doesn't match the configured `responseType`.
+
+**Throne: HTML page returned instead of CSV** — the OAuth2 token was rejected, or the report is not enabled for OAuth download. In the Throne panel, go to **Account → Authorisation** and enable the report's Download option. See the [Throne guide](/partner-integration/platforms/throne) for details.

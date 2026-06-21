@@ -1,0 +1,148 @@
+---
+title: "apiConfig reference"
+description: "Complete reference for the apiConfig JSON field that controls how AdsVector calls your affiliate API."
+---
+
+`apiConfig` is a JSON object stored on the partner record. It controls date parameters, request formatting, response parsing, and other connection details that can't be expressed through the standard partner fields.
+
+You set `apiConfig` when creating or updating a partner via the API:
+
+```json
+{
+  "name": "My Program",
+  "slug": "my-program",
+  "apiUrl": "https://api.example.com/stats",
+  "authMethod": "API_KEY",
+  "apiKey": "sk-…",
+  "apiConfig": {
+    "dateFromField": "date_from",
+    "dateToField": "date_to",
+    "responseType": "fraga_stats"
+  }
+}
+```
+
+---
+
+## Authentication overrides
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `tokenField` | `string` | Send the API key as a query parameter with this name instead of the `Authorization` header. Example: `"api_token"` |
+| `authorizationScheme` | `"raw"` | Send the API key without the `Bearer ` prefix when set to `"raw"` |
+| `usernameField` | `string` | Override the query-parameter name for username (default: `"username"`) |
+| `passwordField` | `string` | Override the query-parameter name for password (default: `"password"`) |
+| `customHeaders` | `object` | Key-value map of HTTP headers added to every request (used with `CUSTOM_HEADERS` auth method) |
+| `oauthTokenUrl` | `string` | Override the OAuth2 token endpoint (default: `{origin}/oauth/access_token`) |
+| `oauthScope` | `string` | OAuth2 scope to request (default: `"r_user_stats"`) |
+
+---
+
+## Date parameters
+
+AdsVector passes a date range to the API so only recent data is fetched. Configure the parameter names and format to match your program's API.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `dateFromField` | `string` | Query parameter name for the start date. Example: `"date_from"` |
+| `dateToField` | `string` | Query parameter name for the end date. Example: `"date_to"` |
+| `dateFormat` | `"unix"` | Send dates as Unix timestamps (seconds) instead of `YYYY-MM-DD` strings |
+
+During auto-sync, the date range is:
+- **From:** last successful sync date, capped at 30 days ago (or 7 days ago on the first sync)
+- **To:** today (UTC midnight)
+
+---
+
+## Command / action parameter
+
+Some affiliate APIs use a single endpoint with a `command` or `action` parameter to select the report type.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `commandField` | `string` | Query parameter name for the command/action. Example: `"action"` |
+| `commands` | `string[]` | List of command values. The first value is used for auto-sync. All values can be cycled through via the fetch-data endpoint. |
+
+Example:
+
+```json
+{
+  "commandField": "action",
+  "commands": ["get_stats"]
+}
+```
+
+---
+
+## Extra static parameters
+
+Add any fixed query parameters that must be sent with every request:
+
+```json
+{
+  "extraParams": {
+    "currency": "USD",
+    "format": "json"
+  }
+}
+```
+
+---
+
+## HTTP method and body format
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `httpMethod` | `"GET"` \| `"POST"` | HTTP method to use (default: `"GET"`). For `OAUTH2_CLIENT_CREDENTIALS`, the default is `"POST"`. |
+| `bodyFormat` | `"json"` | When `httpMethod` is `"POST"`, send parameters as a JSON body instead of query string |
+
+---
+
+## Response parser
+
+`responseType` tells AdsVector which built-in parser to use for the response. Without it, AdsVector expects a generic JSON shape (`{ data: { items: [...] } }` or a plain array).
+
+| Value | Platform | Format |
+|-------|----------|--------|
+| `fraga_stats` | Fraga | JSON `{ data: [...] }` with `serial_id`, `transaction_date` |
+| `cellexpert` | CellExpert | XML `<ResultSet><row>…</row></ResultSet>` |
+| `throne_csv` | Throne (MyAffiliates) | CSV with repeated headers per pay period |
+| `1xbet` | 1xBet | JSON array with `SubID`, `Regs`, `Countftd`, `ItogComission` |
+| `affilka` | Affilka | JSON `{ rows: { data: [...] } }` or `{ data: [...] }` |
+
+See the [platform guides](/partner-integration/platforms/index) for the exact configuration for each.
+
+---
+
+## Network options
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `useProxy` | `boolean` | Route requests through the server-side proxy configured in `PROXY_URL`. Useful for APIs that restrict access by IP. |
+
+---
+
+## Full example
+
+A program that accepts GET requests with Bearer auth, requires date range in `from` / `to` parameters, and uses the Fraga response format:
+
+```json
+{
+  "dateFromField": "from",
+  "dateToField": "to",
+  "responseType": "fraga_stats"
+}
+```
+
+A program that requires POST with a JSON body and OAuth2:
+
+```json
+{
+  "httpMethod": "POST",
+  "bodyFormat": "json",
+  "dateFromField": "start_date",
+  "dateToField": "end_date",
+  "oauthTokenUrl": "https://auth.example.com/oauth/token",
+  "oauthScope": "stats:read"
+}
+```

@@ -1,0 +1,99 @@
+---
+title: "CSV import"
+description: "Import affiliate stats from a report file when the program doesn't provide an API."
+---
+
+Some affiliate programs let you download a report as a CSV file but don't offer an API. AdsVector can import these reports directly — either from a URL or via an upload.
+
+## When to use CSV import
+
+Use CSV import when:
+- The affiliate program only provides file-based exports
+- You have a scheduled report URL that updates automatically
+- You want to import historical data from a downloaded file
+
+For programs that offer both an API and CSV export, the API integration is recommended because it can sync automatically.
+
+## Create a CSV partner
+
+When creating the partner, set `dataSource` to `CSV`:
+
+```json
+{
+  "name": "MyAffiliate Program",
+  "slug": "myaffiliate",
+  "dataSource": "CSV",
+  "authMethod": "NONE"
+}
+```
+
+`apiUrl` and credentials are not required for CSV partners.
+
+## Import from a URL
+
+If your affiliate program generates a report at a stable URL (common with S3-hosted exports or scheduled download links), you can import directly:
+
+```
+POST /partners/:id/import-csv-url
+```
+
+```json
+{
+  "url": "https://reports.example.com/stats-2026-06.csv"
+}
+```
+
+AdsVector downloads the file and processes it immediately. The response includes:
+
+```json
+{
+  "data": {
+    "recordsProcessed": 142,
+    "totalRows": 158
+  },
+  "message": "CSV imported successfully",
+  "success": true
+}
+```
+
+## Expected CSV format
+
+AdsVector expects the following column headers (case-sensitive):
+
+| Column | Required | Description |
+|--------|----------|-------------|
+| `Media Campaign ID` | Yes | The affiliate program's campaign identifier |
+| `Media Campaign Name` | No | Campaign display name |
+| `Brand Name` | No | Brand associated with the campaign |
+| `Customer Reg. Date` | Yes | Date of the stats row (`YYYY-MM-DD`) |
+| `Click Count` | No | Total clicks |
+| `Unique Click Count` | No | Unique clicks |
+| `Reg. Count` | No | Registrations (leads) |
+| `FTD Count` | No | First-time deposits (conversions) |
+| `Revenue Share` | No | Revenue share amount |
+| `CPA` | No | CPA payout |
+| `CPC` | No | CPC payout |
+| `Fixed Fee` | No | Fixed fee payout |
+| `Deductions` | No | Deductions from revenue |
+| `Deposits` | No | Total deposit amount |
+| `NGR` | No | Net gaming revenue |
+| `Bonuses` | No | Bonuses paid |
+| `Turnover` | No | Total wagered amount |
+
+Revenue is calculated as `Revenue Share + CPA + CPC + Fixed Fee − Deductions`.
+
+Rows with a missing `Media Campaign ID` or `Customer Reg. Date` are skipped. Multiple rows with the same campaign + date are aggregated (summed) before writing to the database.
+
+## How stats are stored
+
+For each unique `Media Campaign ID + Customer Reg. Date` combination:
+- A campaign record is created or updated (name, brand metadata)
+- A `CampaignStats` row is upserted for that date
+
+Re-importing the same file is safe — existing rows are updated with the new values.
+
+## Range sync for CSV partners
+
+When you trigger a range sync on a CSV partner, AdsVector counts how many stats rows already exist in the requested date range instead of calling an API. This means range sync on CSV partners is instant and doesn't download anything — it simply reports what data you already have.
+
+To update the data, run another `import-csv-url` with the new report file.

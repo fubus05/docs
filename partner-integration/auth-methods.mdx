@@ -1,0 +1,131 @@
+---
+title: "Authentication methods"
+description: "How AdsVector authenticates with your affiliate program's API."
+---
+
+When you create a partner, you choose how AdsVector sends credentials to the affiliate API. The method you pick must match what the affiliate program expects.
+
+## API Key (`API_KEY`)
+
+The default and most common method. Your API key is sent as an HTTP header:
+
+```
+Authorization: Bearer <your-api-key>
+```
+
+Some programs expect the key in a query parameter instead of a header. Use `apiConfig.tokenField` to configure that:
+
+```json
+{
+  "tokenField": "api_token"
+}
+```
+
+With `tokenField` set, the request becomes:
+
+```
+GET https://api.example.com/stats?api_token=<your-api-key>
+```
+
+A small number of programs require the key without the `Bearer` prefix:
+
+```json
+{
+  "authorizationScheme": "raw"
+}
+```
+
+**Fields required when creating the partner:**
+- `apiKey` — your API key or access token
+
+---
+
+## Credentials (`CREDENTIALS`)
+
+Username and password are appended to the request as query parameters:
+
+```
+GET https://api.example.com/stats?username=you&password=secret
+```
+
+The parameter names default to `username` and `password`. Use `apiConfig.usernameField` / `apiConfig.passwordField` to override them:
+
+```json
+{
+  "usernameField": "login",
+  "passwordField": "pass"
+}
+```
+
+**Fields required when creating the partner:**
+- `apiUsername`
+- `apiPassword`
+
+---
+
+## OAuth2 Client Credentials (`OAUTH2_CLIENT_CREDENTIALS`)
+
+AdsVector performs the OAuth2 `client_credentials` grant automatically before each request:
+
+1. Posts `client_id` + `client_secret` to the token endpoint
+2. Receives an `access_token`
+3. Caches the token until 60 seconds before expiry
+4. Sends subsequent API requests with `Authorization: Bearer <token>`
+
+The token endpoint defaults to `{origin-of-apiUrl}/oauth/access_token`. Override it if needed:
+
+```json
+{
+  "oauthTokenUrl": "https://auth.example.com/token",
+  "oauthScope": "r_user_stats"
+}
+```
+
+**Fields required when creating the partner:**
+- `apiUrl` — the stats endpoint (origin is used to derive the default token URL)
+- `apiUsername` — OAuth2 `client_id`
+- `apiPassword` — OAuth2 `client_secret`
+
+<Note>
+Throne (MyAffiliates-based) panels use this method. See the [Throne guide](/partner-integration/platforms/throne) for the exact configuration.
+</Note>
+
+---
+
+## Custom Headers (`CUSTOM_HEADERS`)
+
+Sends arbitrary HTTP headers with every request. Use this when the program requires a session cookie, a proprietary auth header, or multiple header values.
+
+```json
+{
+  "customHeaders": {
+    "Cookie": "session=abc123; token=xyz",
+    "X-Api-Version": "2"
+  }
+}
+```
+
+No `apiKey`, `apiUsername`, or `apiPassword` fields are needed — all auth information goes into `customHeaders`.
+
+<Warning>
+Session cookies expire. You must update `customHeaders` manually whenever your session refreshes. For long-lived integrations, prefer `API_KEY` or `OAUTH2_CLIENT_CREDENTIALS`.
+</Warning>
+
+---
+
+## No authentication (`NONE`)
+
+Use for public endpoints that require no credentials.
+
+---
+
+## Choosing the right method
+
+| Your program uses | Method to select |
+|-------------------|-----------------|
+| API key / token in Authorization header | `API_KEY` |
+| API key in query parameter | `API_KEY` + `apiConfig.tokenField` |
+| Username + password as query params | `CREDENTIALS` |
+| OAuth2 client credentials flow | `OAUTH2_CLIENT_CREDENTIALS` |
+| Session cookie or custom header | `CUSTOM_HEADERS` |
+| No authentication | `NONE` |

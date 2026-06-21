@@ -1,0 +1,33 @@
+---
+title: "Supported platforms"
+description: "Step-by-step integration guides for affiliate platforms that AdsVector supports out of the box."
+---
+
+AdsVector has built-in response parsers for these affiliate platforms. Each guide provides the exact `apiConfig` to copy and where to find your credentials.
+
+<CardGroup cols={2}>
+  <Card title="Fraga" icon="chart-line" href="/partner-integration/platforms/fraga">
+    REST API with `serial_id`-keyed stats rows
+  </Card>
+  <Card title="CellExpert" icon="table" href="/partner-integration/platforms/cellexpert">
+    XML-based stats export grouped by brand
+  </Card>
+  <Card title="Throne (MyAffiliates)" icon="shield" href="/partner-integration/platforms/throne">
+    OAuth2 + CSV download via the MyAffiliates panel
+  </Card>
+  <Card title="1xBet" icon="dice" href="/partner-integration/platforms/1xbet">
+    JSON array keyed by `SubID`
+  </Card>
+  <Card title="Affilka" icon="users" href="/partner-integration/platforms/affilka">
+    REST or cell-array JSON response
+  </Card>
+  <Card title="Generic REST API" icon="plug" href="/partner-integration/platforms/generic-rest">
+    For any other affiliate program with a JSON API
+  </Card>
+</CardGroup>
+
+## Don't see your platform?
+
+If your affiliate program is not listed, use the [generic REST integration](/partner-integration/platforms/generic-rest). You'll need to configure date parameters and potentially map the response fields yourself.
+
+If the API response format doesn't match the generic parser, contact support with a sample API response and we can add a dedicated parser.
