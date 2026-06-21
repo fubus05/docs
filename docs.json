@@ -158,12 +158,7 @@
     "dark": "/logo/dark.svg"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Submit IT ticket",
-        "href": "/it-security/access-requests"
-      }
-    ],
+    "links": [],
     "primary": {
       "type": "button",
       "label": "Employee portal",
