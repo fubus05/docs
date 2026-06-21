@@ -55,20 +55,11 @@
       }
     ]
   },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg",
-    "href": "/"
-  },
   "navbar": {
-    "links": [],
     "primary": {
       "type": "button",
       "label": "Open dashboard",
-      "href": "https://app.adsvector.io"
+      "href": "https://goraff.space"
     }
-  },
-  "footer": {
-    "socials": {}
   }
 }
