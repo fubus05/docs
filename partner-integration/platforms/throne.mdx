@@ -1,13 +1,13 @@
 ---
-title: "Throne (MyAffiliates)"
-description: "Connect your Throne affiliate panel to GorAff using OAuth2 and CSV export."
+title: "MyAffiliates"
+description: "Connect your MyAffiliates affiliate panel to GorAff using OAuth2 and CSV export."
 ---
 
-Throne is built on the MyAffiliates platform. It uses OAuth2 client credentials for authentication and returns affiliate stats as a CSV file. GorAff fetches the CSV over HTTP after obtaining an OAuth2 bearer token.
+MyAffiliates uses OAuth2 client credentials for authentication and returns affiliate stats as a CSV file. GorAff fetches the CSV over HTTP after obtaining an OAuth2 bearer token.
 
 ## Metrics imported
 
-| GorAff field | Throne CSV column |
+| GorAff field | MyAffiliates CSV column |
 |-----------------|-------------------|
 | Clicks | `Clicks` |
 | Leads | `Signups` or `NRC` |
@@ -24,28 +24,28 @@ GorAff handles both column naming conventions (`Signups`/`NRC`, `FTD Count`/`NDC
 
 ## Get your credentials
 
-1. Log in to the Throne affiliate panel
+1. Log in to the MyAffiliates panel
 2. Go to **Account → API / OAuth** settings
 3. Note your **Client ID** and **Client Secret**
-4. Find your **CSV download URL** — it usually looks like `https://panel.thrnaffpanel.com/api/report.csv`
+4. Find your **CSV download URL** — it usually looks like `https://panel.example.com/api/report.csv`
 
 ## Enable OAuth download for your report
 
 Before connecting, make sure the CSV report is allowed to be downloaded via OAuth:
 
-1. In Throne, go to **Account → Authorisation**
+1. In the panel, go to **Account → Authorisation**
 2. Find the report you want to sync
 3. Under **Download options**, enable OAuth-based download
 
-If this step is skipped, GorAff will receive an HTML login page instead of a CSV and the sync will fail with: *"Throne returned an HTML page instead of CSV"*.
+If this step is skipped, GorAff will receive an HTML login page instead of a CSV and the sync will fail with: *"Returned an HTML page instead of CSV"*.
 
 ## Configure the partner
 
 ```json
 {
-  "name": "Throne",
-  "slug": "throne",
-  "apiUrl": "https://panel.thrnaffpanel.com/api/report.csv",
+  "name": "MyAffiliates",
+  "slug": "myaffiliates",
+  "apiUrl": "https://panel.example.com/api/report.csv",
   "authMethod": "OAUTH2_CLIENT_CREDENTIALS",
   "apiUsername": "your-client-id",
   "apiPassword": "your-client-secret",
@@ -58,16 +58,16 @@ If this step is skipped, GorAff will receive an HTML login page instead of a CSV
 ```
 
 <Note>
-Replace `apiUrl`, `apiUsername`, and `apiPassword` with the values from your Throne panel. The `oauthTokenUrl` defaults to `{origin}/oauth/access_token` — add it to `apiConfig` if your panel uses a different token URL.
+Replace `apiUrl`, `apiUsername`, and `apiPassword` with the values from your panel. The `oauthTokenUrl` defaults to `{origin}/oauth/access_token` — add it to `apiConfig` if your panel uses a different token URL.
 </Note>
 
 ## How campaigns are created
 
-Each unique `Channel` value in the CSV becomes a campaign. Rows are grouped by `Channel + Date` — multiple pay-period blocks in the same CSV (Throne re-prints the header for each period) are deduplicated automatically.
+Each unique `Channel` value in the CSV becomes a campaign. Rows are grouped by `Channel + Date` — multiple pay-period blocks in the same CSV (re-printed headers for each period) are deduplicated automatically.
 
 ## Alternative: session cookie
 
-If your Throne panel version doesn't support OAuth download, you can authenticate with a browser session cookie instead:
+If your panel version doesn't support OAuth download, you can authenticate with a browser session cookie instead:
 
 ```json
 {
@@ -84,12 +84,12 @@ If your Throne panel version doesn't support OAuth download, you can authenticat
 ```
 
 <Warning>
-Session cookies expire (typically after a few hours or days). You'll need to update the `customHeaders` cookie value manually whenever it expires. For stable integrations, use OAuth2.
+Session cookies expire. You'll need to update the `customHeaders` cookie value manually whenever it expires. For stable integrations, use OAuth2.
 </Warning>
 
 ## Troubleshooting
 
-**HTML page returned instead of CSV** — OAuth download is not enabled in the Throne panel. Follow the steps in [Enable OAuth download](#enable-oauth-download-for-your-report).
+**HTML page returned instead of CSV** — OAuth download is not enabled in the panel. Follow the steps in [Enable OAuth download](#enable-oauth-download-for-your-report).
 
 **`0` recordsProcessed** — the date range returned no rows with a valid `Channel` and `Date`. Verify that the report URL generates data for the requested period.
 

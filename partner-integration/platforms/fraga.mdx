@@ -1,13 +1,13 @@
 ---
-title: "Fraga"
-description: "Connect your Fraga affiliate account to GorAff."
+title: "GR8 Tech"
+description: "Connect your GR8 Tech affiliate account to GorAff."
 ---
 
-Fraga uses a REST API that returns JSON with a `data` array. Each row is keyed by `serial_id` (tracker/campaign) and `transaction_date`.
+GR8 Tech uses a REST API that returns JSON with a `data` array. Each row is keyed by `serial_id` (tracker/campaign) and `transaction_date`.
 
 ## Metrics imported
 
-| GorAff field | Fraga field |
+| GorAff field | GR8 Tech field |
 |-----------------|-------------|
 | Leads | `registration` |
 | Conversions | `ftd_count` |
@@ -22,7 +22,7 @@ Fraga uses a REST API that returns JSON with a `data` array. Each row is keyed b
 
 ## Get your credentials
 
-1. Log in to your Fraga affiliate panel
+1. Log in to your GR8 Tech affiliate panel
 2. Navigate to **Account → API** or **Tools → API Access**
 3. Copy your **API Key** and the **Stats endpoint URL**
 
@@ -30,11 +30,11 @@ Fraga uses a REST API that returns JSON with a `data` array. Each row is keyed b
 
 ```json
 {
-  "name": "Fraga",
-  "slug": "fraga",
-  "apiUrl": "https://api.fraga.com/v1/stats",
+  "name": "GR8 Tech",
+  "slug": "gr8tech",
+  "apiUrl": "https://api.gr8tech.io/v1/stats",
   "authMethod": "API_KEY",
-  "apiKey": "your-fraga-api-key",
+  "apiKey": "your-gr8tech-api-key",
   "apiConfig": {
     "dateFromField": "from",
     "dateToField": "to",
@@ -44,7 +44,7 @@ Fraga uses a REST API that returns JSON with a `data` array. Each row is keyed b
 ```
 
 <Note>
-Replace `apiUrl` with the exact endpoint URL from your Fraga panel. The field names `from` / `to` are the most common, but verify them in the Fraga API documentation.
+Replace `apiUrl` with the exact endpoint URL from your GR8 Tech panel. The field names `from` / `to` are the most common, but verify them in your GR8 Tech API documentation.
 </Note>
 
 ## How campaigns are created

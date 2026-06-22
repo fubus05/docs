@@ -1,0 +1,66 @@
+---
+title: "Soft2Bet"
+description: "Connect your Soft2Bet affiliate account to GorAff."
+---
+
+Soft2Bet is a B2B iGaming platform provider. Their affiliate API returns JSON stats grouped by campaign and date.
+
+## Metrics imported
+
+| GorAff field | Soft2Bet field |
+|-----------------|----------------|
+| Clicks | `clicks` |
+| Leads | `registrations` |
+| Conversions | `ftd_count` |
+| Revenue | `commission` |
+| rawData.deposits | `deposits` |
+| rawData.ngr | `ngr` |
+
+## Get your credentials
+
+1. Log in to your Soft2Bet affiliate panel
+2. Navigate to **Account → API Settings** or contact your Soft2Bet account manager
+3. Copy your **API URL**, **API key**, and note the date parameter names
+
+## Configure the partner
+
+```json
+{
+  "name": "Soft2Bet",
+  "slug": "soft2bet",
+  "apiUrl": "https://affiliates.soft2bet.com/api/stats",
+  "authMethod": "API_KEY",
+  "apiKey": "your-soft2bet-api-key",
+  "apiConfig": {
+    "dateFromField": "date_from",
+    "dateToField": "date_to"
+  }
+}
+```
+
+<Note>
+Replace `apiUrl` and `apiKey` with the values provided by your Soft2Bet account manager. If the date parameter names differ, update `dateFromField` and `dateToField` accordingly.
+</Note>
+
+## How campaigns are created
+
+GorAff uses the campaign `id` field from the response as `externalId`. Campaign names and statuses are updated on every sync.
+
+## Test the connection
+
+After saving, click **Sync now**. Check the sync log for `SUCCESS` and `recordsProcessed > 0`.
+
+If the generic parser doesn't match your Soft2Bet API response format, use the fetch-data endpoint to inspect the raw response:
+
+```
+POST /partners/:id/fetch-data
+```
+
+```json
+{
+  "fromDate": "2026-06-01",
+  "toDate": "2026-06-07"
+}
+```
+
+Contact GorAff support with the raw response if you need a dedicated parser added.
