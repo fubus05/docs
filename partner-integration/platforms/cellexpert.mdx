@@ -19,9 +19,42 @@ The date field in the XML is `Day` in `YYYY/MM/DD` format — GorAff converts it
 
 ## Get your credentials
 
-1. Log in to the CellExpert affiliate portal
-2. Go to **Reports → API** or **My Account → API Settings**
-3. Copy your **API URL** and **API token / key**
+CellExpert uses an **Access Key** for authentication and requires GorAff's server IP to be whitelisted before the key will work.
+
+<AccordionGroup>
+  <Accordion title="Step 1 — Open API settings">
+    In the left sidebar, click **API settings**.
+
+    ![API settings in the left sidebar](/images/cellexpert/01-api-settings-menu.png)
+  </Accordion>
+
+  <Accordion title="Step 2 — Whitelist GorAff's IP and generate your key">
+    On the **API settings** page:
+
+    1. In the **IP addresses** section, enter GorAff's server IP in the **IP** field and click **Add**:
+       ```
+       164.92.182.155
+       ```
+    2. Confirm the IP appears in **Whitelisted IPs**
+    3. Click **Regenerate key** in the **Access Key** section to generate your API key
+
+    ![API settings page showing IP whitelist and Regenerate key button](/images/cellexpert/02-api-settings-page.png)
+
+    <Warning>
+      The API will reject all requests from non-whitelisted IPs. Make sure GorAff's IP is added before testing the connection.
+    </Warning>
+  </Accordion>
+
+  <Accordion title="Step 3 — Copy your Access Key">
+    A modal will appear with your **Access Key**. Copy it immediately using the copy icon or download it — **it will not be shown again** after you close this window.
+
+    ![API access key modal](/images/cellexpert/03-api-key-modal.png)
+
+    <Warning>
+      If you close the modal without copying the key, you will need to click **Regenerate key** again. This revokes the previous key immediately.
+    </Warning>
+  </Accordion>
+</AccordionGroup>
 
 ## Configure the partner
 

@@ -97,3 +97,43 @@ Re-importing the same file is safe — existing rows are updated with the new va
 When you trigger a range sync on a CSV partner, GorAff counts how many stats rows already exist in the requested date range instead of calling an API. This means range sync on CSV partners is instant and doesn't download anything — it simply reports what data you already have.
 
 To update the data, run another `import-csv-url` with the new report file.
+
+---
+
+## Tritana
+
+Tritana doesn't provide a direct API endpoint. Instead, you create a **report preset** in the General report and enable API availability on it — this generates a stable link that GorAff can fetch as a CSV.
+
+<AccordionGroup>
+  <Accordion title="Step 1 — Open Reports → General">
+    In the left sidebar, expand **Reports** and click **General**.
+
+    ![Reports → General in the sidebar](/images/tritana/01-reports-general.png)
+  </Accordion>
+
+  <Accordion title="Step 2 — Set the date range and create a preset">
+    Set the date range using the date picker in the top right, then click **+ Create preset** below the filter bar.
+
+    ![General report with date range and Create preset link](/images/tritana/02-date-range-create-preset.png)
+  </Accordion>
+
+  <Accordion title="Step 3 — Name and save the preset">
+    In the **Saving preset** modal, enter a name (e.g. `GorAff`) and click **Create preset**.
+
+    ![Saving preset modal with name field](/images/tritana/03-save-preset-modal.png)
+  </Accordion>
+
+  <Accordion title="Step 4 — Enable API availability">
+    The **Accesses** modal opens automatically. Toggle **API availability** on — this makes the preset available via a stable API link.
+
+    ![Accesses modal with API availability toggle](/images/tritana/04-api-availability-toggle.png)
+  </Accordion>
+
+  <Accordion title="Step 5 — Copy the link">
+    Once **API availability** is enabled, the **Copy link** button appears. Click it to copy the report URL.
+
+    ![Accesses modal showing Copy link button](/images/tritana/05-copy-link.png)
+
+    Use this URL in GorAff as the `import-csv-url` endpoint for this partner.
+  </Accordion>
+</AccordionGroup>
