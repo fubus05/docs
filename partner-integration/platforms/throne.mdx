@@ -24,10 +24,45 @@ GorAff handles both column naming conventions (`Signups`/`NRC`, `FTD Count`/`NDC
 
 ## Get your credentials
 
-1. Log in to the MyAffiliates panel
-2. Go to **Account → API / OAuth** settings
-3. Note your **Client ID** and **Client Secret**
-4. Find your **CSV download URL** — it usually looks like `https://panel.example.com/api/report.csv`
+You need to create an OAuth2 client in your MyAffiliates panel to get a **Client ID** and **Client Secret**.
+
+<AccordionGroup>
+  <Accordion title="Step 1 — Open Account settings">
+    Log in to your MyAffiliates panel and click **Account** in the top navigation bar.
+
+    ![Account menu in the top navigation bar](/images/myaffiliates/01-account-menu.png)
+  </Accordion>
+
+  <Accordion title="Step 2 — Go to Authorisation">
+    In the left sidebar under **Account**, click **Authorisation**.
+
+    ![Authorisation link in the left sidebar](/images/myaffiliates/02-authorisation-menu.png)
+  </Accordion>
+
+  <Accordion title="Step 3 — Create a new OAuth2 client">
+    Scroll to the **OAuth2 Clients** section. Enter a name for your client (e.g. `GorAff`) in the **Client name** field, then click **Create new client**.
+
+    ![Create new OAuth2 client form](/images/myaffiliates/03-create-oauth-client.png)
+  </Accordion>
+
+  <Accordion title="Step 4 — Client created successfully">
+    You will see a success message: **"Your client has been created"**. The page will redirect automatically.
+
+    ![Success message after client creation](/images/myaffiliates/04-client-created.png)
+  </Accordion>
+
+  <Accordion title="Step 5 — Copy Client identifier and Client secret">
+    After the redirect, you are back on the Authorisation page. The new client is shown with its **Client identifier** and **Client secret**.
+
+    ![Client identifier and Client secret highlighted](/images/myaffiliates/05-copy-credentials.png)
+
+    <Warning>
+      Copy the **Client secret** immediately — it will not be shown again after you leave this page.
+    </Warning>
+
+    Use these values as `apiUsername` (Client identifier) and `apiPassword` (Client secret) when configuring the partner in GorAff.
+  </Accordion>
+</AccordionGroup>
 
 ## Enable OAuth download for your report
 
@@ -47,7 +82,7 @@ If this step is skipped, GorAff will receive an HTML login page instead of a CSV
   "slug": "myaffiliates",
   "apiUrl": "https://panel.example.com/api/report.csv",
   "authMethod": "OAUTH2_CLIENT_CREDENTIALS",
-  "apiUsername": "your-client-id",
+  "apiUsername": "your-client-identifier",
   "apiPassword": "your-client-secret",
   "apiConfig": {
     "dateFromField": "start_date",
