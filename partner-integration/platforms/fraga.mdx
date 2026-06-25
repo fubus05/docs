@@ -1,13 +1,13 @@
 ---
-title: "GR8 Tech"
-description: "Connect your GR8 Tech affiliate account to GorAff."
+title: "Fraga Partners"
+description: "Connect your Fraga Partners affiliate account to GorAff."
 ---
 
-GR8 Tech uses a REST API that returns JSON with a `data` array. Each row is keyed by `serial_id` (tracker/campaign) and `transaction_date`.
+Fraga Partners uses a REST API that returns JSON with a `data` array. Each row is keyed by `serial_id` (tracker/campaign) and `transaction_date`.
 
 ## Metrics imported
 
-| GorAff field | GR8 Tech field |
+| GorAff field | Fraga Partners field |
 |-----------------|-------------|
 | Leads | `registration` |
 | Conversions | `ftd_count` |
@@ -20,36 +20,54 @@ GR8 Tech uses a REST API that returns JSON with a `data` array. Each row is keye
 | rawData.ggr | `ggr` |
 | rawData.turnover | `turnover` |
 
-## Get your credentials
+## Get your API link
 
-1. Log in to your GR8 Tech affiliate panel
-2. Navigate to **Account → API** or **Tools → API Access**
-3. Copy your **API Key** and the **Stats endpoint URL**
+Fraga Partners uses a pre-authenticated URL as the integration endpoint — the token is embedded in the link itself. No separate API key is needed.
+
+<AccordionGroup>
+  <Accordion title="How to get your Statistics Retrieval API link">
+    1. Log in to your [Fraga Partners](https://fragapartners.com) affiliate panel
+    2. In the left sidebar, click **Tracking links**
+    3. Go to **Statistics retrieval API**
+    4. The full API link will be displayed in the **Statistics retrieval link** field
+    5. Click **COPY LINK** to copy it to your clipboard
+
+    ![Statistics Retrieval API page in Fraga Partners panel](/images/fraga/statistics-retrieval-api.png)
+
+    The copied link will look like this:
+    ```
+    https://api.fragapartners.com/data/affiliate_statistics/reports?token=YOUR_TOKEN&start=DATE&end=DATE&per_page=10&page=1
+    ```
+
+    <Note>
+      Use only the base part of the URL (up to and including `token=YOUR_TOKEN`). GorAff appends `start`, `end`, `per_page`, and `page` automatically during each sync.
+    </Note>
+  </Accordion>
+</AccordionGroup>
 
 ## Configure the partner
 
 ```json
 {
-  "name": "GR8 Tech",
-  "slug": "gr8tech",
-  "apiUrl": "https://api.gr8tech.io/v1/stats",
-  "authMethod": "API_KEY",
-  "apiKey": "your-gr8tech-api-key",
+  "name": "Fraga Partners",
+  "slug": "fraga",
+  "apiUrl": "https://api.fragapartners.com/data/affiliate_statistics/reports?token=YOUR_TOKEN",
+  "authMethod": "NO_AUTH",
   "apiConfig": {
-    "dateFromField": "from",
-    "dateToField": "to",
+    "dateFromField": "start",
+    "dateToField": "end",
     "responseType": "fraga_stats"
   }
 }
 ```
 
 <Note>
-Replace `apiUrl` with the exact endpoint URL from your GR8 Tech panel. The field names `from` / `to` are the most common, but verify them in your GR8 Tech API documentation.
+  Replace `YOUR_TOKEN` with the token value from the Statistics Retrieval API link you copied in the step above.
 </Note>
 
 ## How campaigns are created
 
-GorAff uses `serial_id` as the `externalId` for each campaign. The campaign name is taken from `tracker_name`. If multiple rows share the same `serial_id` and `transaction_date` (e.g. multiple brands), their metrics are summed before writing.
+GorAff uses `serial_id` as the `externalId` for each campaign. The campaign name is taken from `tracker_name`. If multiple rows share the same `serial_id` and `transaction_date`, their metrics are summed before writing.
 
 ## Test the connection
 
