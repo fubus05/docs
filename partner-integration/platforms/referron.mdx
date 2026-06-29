@@ -1,13 +1,13 @@
 ---
-title: "Soft2Bet"
-description: "Connect your Soft2Bet affiliate account to GorAff."
+title: "Referron"
+description: "Connect your Referron affiliate account to GorAff."
 ---
 
-Soft2Bet is a B2B iGaming platform provider. Their affiliate API returns JSON stats grouped by campaign and date.
+Referron is a B2B iGaming platform provider. Their affiliate API returns JSON stats grouped by campaign and date.
 
 ## Metrics imported
 
-| GorAff field | Soft2Bet field |
+| GorAff field | Referron field |
 |-----------------|----------------|
 | Clicks | `clicks` |
 | Leads | `registrations` |
@@ -18,19 +18,19 @@ Soft2Bet is a B2B iGaming platform provider. Their affiliate API returns JSON st
 
 ## Get your credentials
 
-1. Log in to your Soft2Bet affiliate panel
-2. Navigate to **Account → API Settings** or contact your Soft2Bet account manager
+1. Log in to your Referron affiliate panel
+2. Navigate to **Account → API Settings** or contact your Referron account manager
 3. Copy your **API URL**, **API key**, and note the date parameter names
 
 ## Configure the partner
 
 ```json
 {
-  "name": "Soft2Bet",
-  "slug": "soft2bet",
+  "name": "Referron",
+  "slug": "referron",
   "apiUrl": "https://affiliates.soft2bet.com/api/stats",
   "authMethod": "API_KEY",
-  "apiKey": "your-soft2bet-api-key",
+  "apiKey": "your-referron-api-key",
   "apiConfig": {
     "dateFromField": "date_from",
     "dateToField": "date_to"
@@ -39,7 +39,7 @@ Soft2Bet is a B2B iGaming platform provider. Their affiliate API returns JSON st
 ```
 
 <Note>
-Replace `apiUrl` and `apiKey` with the values provided by your Soft2Bet account manager. If the date parameter names differ, update `dateFromField` and `dateToField` accordingly.
+Replace `apiUrl` and `apiKey` with the values provided by your Referron account manager. If the date parameter names differ, update `dateFromField` and `dateToField` accordingly.
 </Note>
 
 ## How campaigns are created
@@ -50,7 +50,7 @@ GorAff uses the campaign `id` field from the response as `externalId`. Campaign 
 
 After saving, click **Sync now**. Check the sync log for `SUCCESS` and `recordsProcessed > 0`.
 
-If the generic parser doesn't match your Soft2Bet API response format, use the fetch-data endpoint to inspect the raw response:
+If the generic parser doesn't match your Referron API response format, use the fetch-data endpoint to inspect the raw response:
 
 ```
 POST /partners/:id/fetch-data

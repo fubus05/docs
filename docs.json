@@ -44,12 +44,12 @@
             "group": "Platforms",
             "pages": [
               "partner-integration/platforms/index",
-              "partner-integration/platforms/fraga",
+              "partner-integration/platforms/gr8tech",
               "partner-integration/platforms/cellexpert",
               "partner-integration/platforms/throne",
               "partner-integration/platforms/1xbet",
               "partner-integration/platforms/affilka",
-              "partner-integration/platforms/soft2bet",
+              "partner-integration/platforms/referron",
               "partner-integration/platforms/generic-rest"
             ]
           }

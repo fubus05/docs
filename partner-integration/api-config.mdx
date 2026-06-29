@@ -17,7 +17,7 @@ You set `apiConfig` when creating or updating a partner via the API:
   "apiConfig": {
     "dateFromField": "date_from",
     "dateToField": "date_to",
-    "responseType": "fraga_stats"
+    "responseType": "gr8tech_stats"
   }
 }
 ```
@@ -104,7 +104,7 @@ Add any fixed query parameters that must be sent with every request:
 
 | Value | Platform | Format |
 |-------|----------|--------|
-| `fraga_stats` | Fraga | JSON `{ data: [...] }` with `serial_id`, `transaction_date` |
+| `gr8tech_stats` | GR8 Tech | JSON `{ data: [...] }` with `serial_id`, `transaction_date` |
 | `cellexpert` | CellExpert | XML `<ResultSet><row>…</row></ResultSet>` |
 | `throne_csv` | Throne (MyAffiliates) | CSV with repeated headers per pay period |
 | `1xbet` | 1xBet | JSON array with `SubID`, `Regs`, `Countftd`, `ItogComission` |
@@ -124,13 +124,13 @@ See the [platform guides](/partner-integration/platforms/index) for the exact co
 
 ## Full example
 
-A program that accepts GET requests with Bearer auth, requires date range in `from` / `to` parameters, and uses the Fraga response format:
+A program that accepts GET requests with Bearer auth, requires date range in `from` / `to` parameters, and uses the GR8 Tech response format:
 
 ```json
 {
   "dateFromField": "from",
   "dateToField": "to",
-  "responseType": "fraga_stats"
+  "responseType": "gr8tech_stats"
 }
 ```
 

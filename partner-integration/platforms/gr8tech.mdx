@@ -1,13 +1,13 @@
 ---
-title: "Fraga Partners"
-description: "Connect your Fraga Partners affiliate account to GorAff."
+title: "GR8 Tech"
+description: "Connect your GR8 Tech affiliate account to GorAff."
 ---
 
-Fraga Partners uses a REST API that returns JSON with a `data` array. Each row is keyed by `serial_id` (tracker/campaign) and `transaction_date`.
+GR8 Tech uses a REST API that returns JSON with a `data` array. Each row is keyed by `serial_id` (tracker/campaign) and `transaction_date`.
 
 ## Metrics imported
 
-| GorAff field | Fraga Partners field |
+| GorAff field | GR8 Tech field |
 |-----------------|-------------|
 | Leads | `registration` |
 | Conversions | `ftd_count` |
@@ -22,17 +22,17 @@ Fraga Partners uses a REST API that returns JSON with a `data` array. Each row i
 
 ## Get your API link
 
-Fraga Partners uses a pre-authenticated URL as the integration endpoint — the token is embedded in the link itself. No separate API key is needed.
+GR8 Tech uses a pre-authenticated URL as the integration endpoint — the token is embedded in the link itself. No separate API key is needed.
 
 <AccordionGroup>
   <Accordion title="How to get your Statistics Retrieval API link">
-    1. Log in to your [Fraga Partners](https://fragapartners.com) affiliate panel
+    1. Log in to your [GR8 Tech](https://fragapartners.com) affiliate panel
     2. In the left sidebar, click **Tracking links**
     3. Go to **Statistics retrieval API**
     4. The full API link will be displayed in the **Statistics retrieval link** field
     5. Click **COPY LINK** to copy it to your clipboard
 
-    ![Statistics Retrieval API page in Fraga Partners panel](/images/fraga/statistics-retrieval-api.png)
+    ![Statistics Retrieval API page in GR8 Tech panel](/images/fraga/statistics-retrieval-api.png)
 
     The copied link will look like this:
     ```
@@ -49,14 +49,14 @@ Fraga Partners uses a pre-authenticated URL as the integration endpoint — the 
 
 ```json
 {
-  "name": "Fraga Partners",
-  "slug": "fraga",
+  "name": "GR8 Tech",
+  "slug": "gr8tech",
   "apiUrl": "https://api.fragapartners.com/data/affiliate_statistics/reports?token=YOUR_TOKEN",
   "authMethod": "NO_AUTH",
   "apiConfig": {
     "dateFromField": "start",
     "dateToField": "end",
-    "responseType": "fraga_stats"
+    "responseType": "gr8tech_stats"
   }
 }
 ```
