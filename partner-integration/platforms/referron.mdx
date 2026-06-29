@@ -1,104 +1,86 @@
 ---
 title: "ReferON"
-description: "Connect your ReferON affiliate account to GorAff."
+description: "Import affiliate stats from ReferON into GorAff via CSV report URL."
 ---
 
-ReferON is a B2B iGaming platform provider. Their affiliate API returns JSON stats grouped by campaign and date.
+ReferON is a B2B iGaming platform provider. It doesn't expose a direct stats API — instead, you generate a stable report URL inside the ReferON panel and GorAff fetches it as a CSV.
+
+## How it works
+
+1. Create a report preset in the ReferON panel and enable API availability on it
+2. Copy the generated link
+3. Add ReferON as a CSV partner in GorAff and pass the link to `import-csv-url`
 
 ## Metrics imported
 
-| GorAff field | ReferON field |
-|-----------------|----------------|
-| Clicks | `clicks` |
-| Leads | `registrations` |
-| Conversions | `ftd_count` |
-| Revenue | `commission` |
-| rawData.deposits | `deposits` |
-| rawData.ngr | `ngr` |
+| GorAff field | ReferON CSV column |
+|---|---|
+| Clicks | `Click Count` |
+| Leads | `Reg. Count` |
+| Conversions | `FTD Count` |
+| Revenue | `Revenue Share` + `CPA` + `CPC` + `Fixed Fee` − `Deductions` |
+| Deposits | `Deposits` |
+| NGR | `NGR` |
 
-## Get your credentials
-
-1. Log in to your ReferON affiliate panel
-2. Navigate to **Account → API Settings** or contact your ReferON account manager
-3. Copy your **API URL**, **API key**, and note the date parameter names
-
-## Configure the partner
-
-```json
-{
-  "name": "ReferON",
-  "slug": "referron",
-  "apiUrl": "https://affiliates.soft2bet.com/api/stats",
-  "authMethod": "API_KEY",
-  "apiKey": "your-referron-api-key",
-  "apiConfig": {
-    "dateFromField": "date_from",
-    "dateToField": "date_to"
-  }
-}
-```
-
-<Note>
-Replace `apiUrl` and `apiKey` with the values provided by your ReferON account manager. If the date parameter names differ, update `dateFromField` and `dateToField` accordingly.
-</Note>
-
-## How campaigns are created
-
-GorAff uses the campaign `id` field from the response as `externalId`. Campaign names and statuses are updated on every sync.
-
-## Test the connection
-
-After saving, click **Sync now**. Check the sync log for `SUCCESS` and `recordsProcessed > 0`.
-
-If the generic parser doesn't match your ReferON API response format, use the fetch-data endpoint to inspect the raw response:
-
-```
-POST /partners/:id/fetch-data
-```
-
-```json
-{
-  "fromDate": "2026-06-01",
-  "toDate": "2026-06-07"
-}
-```
-
-Contact GorAff support with the raw response if you need a dedicated parser added.
-
-## Get the report URL from ReferON
-
-ReferON doesn't expose a direct API endpoint for stats. Instead, you create a **report preset** in the General report and enable API availability on it — this generates a stable link that GorAff can fetch as a CSV.
+## Step 1 — Get the report URL from ReferON
 
 <AccordionGroup>
-  <Accordion title="Step 1 — Open Reports → General">
+  <Accordion title="1. Open Reports → General">
     In the left sidebar, expand **Reports** and click **General**.
 
     ![Reports → General in the sidebar](/images/referon/01-reports-general.png)
   </Accordion>
 
-  <Accordion title="Step 2 — Set the date range and create a preset">
+  <Accordion title="2. Set the date range and create a preset">
     Set the date range using the date picker in the top right, then click **+ Create preset** below the filter bar.
 
     ![General report with date range and Create preset link](/images/referon/02-date-range-create-preset.png)
   </Accordion>
 
-  <Accordion title="Step 3 — Name and save the preset">
+  <Accordion title="3. Name and save the preset">
     In the **Saving preset** modal, enter a name (e.g. `GorAff`) and click **Create preset**.
 
     ![Saving preset modal with name field](/images/referon/03-save-preset-modal.png)
   </Accordion>
 
-  <Accordion title="Step 4 — Enable API availability">
-    The **Accesses** modal opens automatically. Toggle **API availability** on — this makes the preset available via a stable API link.
+  <Accordion title="4. Enable API availability">
+    The **Accesses** modal opens automatically. Toggle **API availability** on — this makes the preset available via a stable link.
 
     ![Accesses modal with API availability toggle](/images/referon/04-api-availability-toggle.png)
   </Accordion>
 
-  <Accordion title="Step 5 — Copy the link">
+  <Accordion title="5. Copy the link">
     Once **API availability** is enabled, the **Copy link** button appears. Click it to copy the report URL.
 
     ![Accesses modal showing Copy link button](/images/referon/05-copy-link.png)
-
-    Use this URL in GorAff as the `import-csv-url` endpoint for this partner.
   </Accordion>
 </AccordionGroup>
+
+## Step 2 — Configure the partner in GorAff
+
+Create the partner with `dataSource` set to `CSV`:
+
+```json
+{
+  "name": "ReferON",
+  "slug": "referron",
+  "dataSource": "CSV",
+  "authMethod": "NONE"
+}
+```
+
+## Step 3 — Import the report
+
+Pass the URL you copied from ReferON:
+
+```
+POST /partners/:id/import-csv-url
+```
+
+```json
+{
+  "url": "https://<your-referon-report-link>"
+}
+```
+
+GorAff downloads the file and processes it immediately. Re-importing is safe — existing rows are updated with the new values.
